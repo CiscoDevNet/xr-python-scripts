@@ -26,7 +26,7 @@ helper = XrcliHelper(debug = True)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("cmd", help="single line string command",type=str)
+    parser.add_argument("cmd", help="Single line string representing an XR config command",type=str)
     args = parser.parse_args()
     config = args.cmd
     result = helper.xr_apply_config_string(config)
