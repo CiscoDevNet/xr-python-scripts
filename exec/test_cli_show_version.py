@@ -1,29 +1,27 @@
 """
-This script shuts down an interface specified by the user via CLI option
+This script executes show version on the routerr
+
+Pre-requisite configuration on router:
+aaa authorization exec default group tacacs+ local
+aaa authorization eventmanager default local
+aaa authentication login default group tacacs+ local
 
 How to run?
-script run exec <path> test_xr_config.py <interface>
-
-eg: script run /harddisk\: test_xr_config.py Hu0/0/0/35
+script run exec <path> test_cli_show_version.py
+eg: script run /harddisk\: test_cli_show_version.py
 
 Configuration: 
-interface <interface>
-shutdown
+None
 
 Verify:
 show logging last 10 
-check for syslog: 'SCRIPT : Configuration succeeded'
+check for syslog: 'SCRIPT : Show version successful'
 """ 
-import argparse
-import time
-import sys
-import os
-import pprint
-from iosxr.xrcli.xrcli_helper import *
+from iosxr.xrcli.xrcli_helper import XrcliHelper
 from cisco.script_mgmt import xrlog
 
-logger = xrlog.getScriptLogger('sample_script')
-syslog = xrlog.getSysLogger('sample_script')
+logger = xrlog.getScriptLogger('test_cli_show_version.py')
+syslog = xrlog.getSysLogger('test_cli_show_version.py')
 helper = XrcliHelper(debug = True)
 
 if __name__ == '__main__':
