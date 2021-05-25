@@ -1,29 +1,27 @@
 """
-This script shuts down an interface specified by the user via CLI option
+This script accepts configuration from the user and commits it to the router.
+
+Pre-requisite configuration on router:
+aaa authorization exec default group tacacs+ local
+aaa authorization eventmanager default local
+aaa authentication login default group tacacs+ local
 
 How to run?
-script run exec <path> test_xr_config.py <interface>
-
-eg: script run /harddisk\: test_xr_config.py Hu0/0/0/35
+script run exec <path> test_cli_config.py arguments <config>
+eg: script run /harddisk\: test_cli_config.py arguments "hostname Demo"
 
 Configuration: 
-interface <interface>
-shutdown
+Provided by user as command line argument
 
 Verify:
-show logging last 10 
 check for syslog: 'SCRIPT : Configuration succeeded'
 """ 
 import argparse
-import time
-import sys
-import os
-import pprint
-from iosxr.xrcli.xrcli_helper import *
+from iosxr.xrcli.xrcli_helper import XrcliHelper
 from cisco.script_mgmt import xrlog
 
-logger = xrlog.getScriptLogger('sample_script')
-syslog = xrlog.getSysLogger('sample_script')
+logger = xrlog.getScriptLogger('xr_cli_config')
+syslog = xrlog.getSysLogger('xr_cli_config')
 helper = XrcliHelper(debug = True)
 
 if __name__ == '__main__':
@@ -32,6 +30,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     config = args.cmd
     result = helper.xr_apply_config_string(config)
+
     if result['status'] == 'success':
         syslog.info('SCRIPT : Configuration succeeded')
     else:
