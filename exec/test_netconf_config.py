@@ -1,19 +1,23 @@
 """
-This script changes the hostname to Demo
+This script changes the hostname to Demo.
+
+How to run?
+script run exec <path> test_netconf_config.py
+eg: script run /harddisk\: test_netconf_config.py
+
+Configuration: 
+hostname Demo
+
+Verify:
+Check that hostname has changed
 """
-import argparse
-import time
-import json
 import os
-import xmltodict
-import re
 import netconf_test_common
 
 from cisco.script_mgmt import xrlog
-from iosxr.netconf.netconf_lib import *
 
-log = xrlog.getScriptLogger('Sample')
-syslog = xrlog.getSysLogger('Sample')
+log = xrlog.getScriptLogger('test_netconf_config')
+syslog = xrlog.getSysLogger('test_netconf_config')
 LOG_FILE = "netconf_oper_1_" + str(os.getpid()) + ".txt"
 
 def config_hostname():
