@@ -2,7 +2,7 @@
 
 OPS stands for operational simplicity which is achieved by "on-the-box" automation in python, on IOS-XR routers.
 
-FCS Release: 7.3.2 and supported from 7.5.1 onwards
+This feature is supported on IOS-XR releases 7.5.1 onwards.
 
 There are 4 types of scripts:
 
