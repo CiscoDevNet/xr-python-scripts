@@ -1,18 +1,7 @@
 """
 This script executes show version on the router and prints the result.
 
-Pre-requisite configuration:
-aaa authorization exec default group tacacs+ local
-aaa authorization eventmanager default local
-aaa authentication login default group tacacs+ local
-
-How to run?
-script run exec <path> test_cli_show_version.py 
-
-eg: script run /harddisk\: test_cli_show_version.py
-
 Verify:
-show logging last 10 
 check for syslog: 'Show version successful'
 """ 
 import argparse
