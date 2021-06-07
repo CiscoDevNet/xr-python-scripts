@@ -1,36 +1,28 @@
 """
-This script accepts configuration from the user and commits it to the router.
-
-Pre-requisite configuration on router:
-aaa authorization exec default group tacacs+ local
-aaa authorization eventmanager default local
-aaa authentication login default group tacacs+ local
+This script accepts configuration from user as a command line argument and commits it to the router.
 
 How to run?
-script run exec <path> test_cli_config.py arguments <config>
-eg: script run /harddisk\: test_cli_config.py arguments "hostname Demo"
+script run exec <path> test_xr_config.py arguments <configuration>
+eg: script run test_xr_config.py arguments "hostname ios" 
 
-Configuration: 
-Provided by user as command line argument
-
-Verify:
+How to verify:
+show run | i <configuration>
 check for syslog: 'SCRIPT : Configuration succeeded'
 """ 
 import argparse
-from iosxr.xrcli.xrcli_helper import XrcliHelper
+import pprint
+from iosxr.xrcli.xrcli_helper import *
 from cisco.script_mgmt import xrlog
 
-logger = xrlog.getScriptLogger('xr_cli_config')
-syslog = xrlog.getSysLogger('xr_cli_config')
+syslog = xrlog.getSysLogger('sample_script')
 helper = XrcliHelper(debug = True)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("cmd", help="Single line string representing an XR config command",type=str)
+    parser.add_argument("cmd", help="single line string command",type=str)
     args = parser.parse_args()
     config = args.cmd
     result = helper.xr_apply_config_string(config)
-
     if result['status'] == 'success':
         syslog.info('SCRIPT : Configuration succeeded')
     else:

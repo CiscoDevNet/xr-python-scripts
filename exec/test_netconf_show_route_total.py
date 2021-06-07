@@ -1,25 +1,16 @@
-"""
-This script checks show route summary and prints total routes
-
-How to run?
-script run exec <path> test_netconf_show_route_total.py
-eg: script run /harddisk\: test_netconf_show_route_total.py
-
-Configuration: 
-None
-
-Verify:
-Check syslog "Total route operations"
-"""
+import argparse
 import time
+import json
 import os
 import xmltodict
 import re
 import netconf_test_common
 
 from cisco.script_mgmt import xrlog
+from iosxr.netconf.netconf_lib import *
 
-syslog = xrlog.getSysLogger('test_netconf_show_route_total')
+log = xrlog.getScriptLogger('Sample')
+syslog = xrlog.getSysLogger('Sample')
 LOG_FILE = "netconf_oper_1_" + str(os.getpid()) + ".txt"
 
 def route_check():

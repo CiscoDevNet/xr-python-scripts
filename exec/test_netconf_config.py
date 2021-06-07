@@ -1,23 +1,19 @@
 """
-This script changes the hostname to Demo.
-
-How to run?
-script run exec <path> test_netconf_config.py
-eg: script run /harddisk\: test_netconf_config.py
-
-Configuration: 
-hostname Demo
-
-Verify:
-Check that hostname has changed
+This script changes the hostname to Demo
 """
+import argparse
+import time
+import json
 import os
+import xmltodict
+import re
 import netconf_test_common
 
 from cisco.script_mgmt import xrlog
+from iosxr.netconf.netconf_lib import *
 
-log = xrlog.getScriptLogger('test_netconf_config')
-syslog = xrlog.getSysLogger('test_netconf_config')
+log = xrlog.getScriptLogger('Sample')
+syslog = xrlog.getSysLogger('Sample')
 LOG_FILE = "netconf_oper_1_" + str(os.getpid()) + ".txt"
 
 def config_hostname():
@@ -25,10 +21,18 @@ def config_hostname():
     Configure hostname
     """
     logfile = netconf_test_common.DEFAULT_LOG_PATH + LOG_FILE
+    '''
     edit_config = """
         <host-names xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-shellutil-cfg">
             <host-name>Demo</host-name>
         </host-names>"""
+    '''
+     edit_config = """
+         <interfaces xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg">
+             <interface>
+                 <interface-name>null 0</interface-name>
+             </interface>
+          </interfaces>"""
     try:
         netconf_test_common.logf = open(logfile, 'w')
     except Exception as e:

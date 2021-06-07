@@ -1,33 +1,28 @@
-import argparse
+"""
+This checks the cpu utilization on the router at regular intervals and add syslogs.
+
+""" 
+
 import time
-import json
 import os
 import xmltodict
 import re
-import netconf_test_common
 
 from cisco.script_mgmt import xrlog
 from iosxr.netconf.netconf_lib import *
 
 log = xrlog.getScriptLogger('Sample')
 syslog = xrlog.getSysLogger('Sample')
-LOG_FILE = "netconf_oper_1_" + str(os.getpid()) + ".txt"
 
 def cpu_memory_check():
     """
     Check total routes in router
     """
     '''
-    logfile = netconf_test_common.DEFAULT_LOG_PATH + LOG_FILE
     filter_string = """
     <system-monitoring xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-wdsysmon-fd-oper">
      <cpu-utilization/>
     </system-monitoring>"""            
-    try:
-        netconf_test_common.logf = open(logfile, 'w')
-    except Exception as e:
-        print("ERROR: Unable to open " + logfile + "!")
-        return None
     nc = NetconfClient(debug=True)
     nc.connect()
     netconf_test_common.do_get(nc, filter=filter_string)
@@ -42,7 +37,7 @@ def cpu_memory_check():
             syslog.error("CPU utilization over 75%")
         else:
             syslog.info("CPU utilization normal")
-        time.sleep(10)    
+        time.sleep(5)    
     
 def _xml_to_dict(xml_output, xml_tag=None):
     """
@@ -59,6 +54,21 @@ def _xml_to_dict(xml_output, xml_tag=None):
     ret_dict = xmltodict.parse(xml_data_match.group(1))
     return ret_dict
 
+def do_get(nc, filter=None, path=None):
+    try:
+        if path is not None:
+            nc.rpc.get(file=path)
+        elif filter is not None:
+            nc.rpc.get(request=filter)
+        else:
+            print_log("ERROR: Get data is empty!\n")
+            return False
+    except Exception as e:
+        print_log(str(e) + "\n")
+        print_log(traceback.format_exc())
+        print_log("Caught an Exception when performing get\n")
+        return False
+    return True
 
 if __name__ == '__main__':
     cpu_memory_check()
