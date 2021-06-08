@@ -1,17 +1,17 @@
-import argparse
-import time
-import json
-import os
+"""
+This script gets the show route summary oper data and prints the total route operations.
+
+To verify:
+check for syslog 'Total route operations'
+"""
+
 import xmltodict
 import re
-import netconf_test_common
 
 from cisco.script_mgmt import xrlog
 from iosxr.netconf.netconf_lib import *
 
-log = xrlog.getScriptLogger('Sample')
-syslog = xrlog.getSysLogger('Sample')
-LOG_FILE = "netconf_oper_1_" + str(os.getpid()) + ".txt"
+syslog = xrlog.getSysLogger('test_netconf_show_ route_total')
 
 def route_check():
     """
@@ -24,19 +24,14 @@ def route_check():
     <rib-stats-summary/>
     </rib-stats>
     </rib>"""            
-    try:
-        netconf_test_common.logf = open(logfile, 'w')
-    except Exception as e:
-        print("ERROR: Unable to open " + logfile + "!")
-        return None
+
     nc = NetconfClient(debug=True)
     nc.connect()
-    netconf_test_common.do_get(nc, filter=filter_string)
+    do_get(nc, filter=filter_string)
     ret_dict = _xml_to_dict(nc.reply, 'rib')
     route_oper = int(ret_dict['rib']['rib-stats']['rib-stats-summary']['batch-stats']['route-op-arg-rx'])
     syslog.info('Total route operations: %s' %(route_oper))
     nc.close()
-    netconf_test_common.logf.close()
     
 def _xml_to_dict(xml_output, xml_tag=None):
     """
@@ -52,6 +47,19 @@ def _xml_to_dict(xml_output, xml_tag=None):
     xml_data_match = re.search(pattern, xml_output)
     ret_dict = xmltodict.parse(xml_data_match.group(1))
     return ret_dict
+
+def do_get(nc, filter=None, path=None):
+    try:
+        if path is not None:
+            nc.rpc.get(file=path)
+        elif filter is not None:
+                nc.rpc.get(request=filter)
+        else:
+            syslog.error("ERROR: Get data is empty!")
+            return False
+    except Exception as e:
+        syslog.error("Caught an Exception when performing get")
+        return False
 
 
 if __name__ == '__main__':
