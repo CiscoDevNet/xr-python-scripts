@@ -17,7 +17,7 @@ from cisco.script_mgmt import xrlog
 syslog = xrlog.getSysLogger('sample_script')
 helper = XrcliHelper(debug = True)
 
-if __name__ == '__main__':
+def test_config():
     parser = argparse.ArgumentParser()
     parser.add_argument("cmd", help="single line string command",type=str)
     args = parser.parse_args()
@@ -27,3 +27,7 @@ if __name__ == '__main__':
         syslog.info('SCRIPT : Configuration succeeded')
     else:
         syslog.error('SCRIPT : Configuration failed')
+    
+
+if __name__ == '__main__':
+    test_config()
