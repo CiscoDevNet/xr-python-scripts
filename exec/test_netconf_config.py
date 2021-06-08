@@ -1,5 +1,9 @@
 """
-This script changes the hostname to Demo
+This script adds a loopback interface configuration.
+
+To verify:
+- Check configuraiton for the loopback interface
+- Check syslog Configuration successful
 """
 import argparse
 import time
@@ -7,48 +11,61 @@ import json
 import os
 import xmltodict
 import re
-import netconf_test_common
+
 
 from cisco.script_mgmt import xrlog
 from iosxr.netconf.netconf_lib import *
 
 log = xrlog.getScriptLogger('Sample')
 syslog = xrlog.getSysLogger('Sample')
-LOG_FILE = "netconf_oper_1_" + str(os.getpid()) + ".txt"
 
-def config_hostname():
+def do_edit_cfg(nc, config=None, path=None):
+    try:
+        if path is not None:
+            nc.rpc.edit_config(file=path)
+        elif config is not None:
+            nc.rpc.edit_config(config=config)
+        else:
+           syslog.error("ERROR: Config data is empty!")
+           return False
+    except Exception as e:
+        syslog.error("Caught an Exception when editing config\n")
+        syslog.error(str(e) + "\n")
+        return False
+
+    if "<ok/>" in nc.reply:
+        return True
+    else:
+        return False
+
+
+def do_commit(nc):
+    try:
+        nc.rpc.commit()
+    except Exception as e:
+        syslog.error("Caught Exception when committing config\n")
+        return False
+
+
+def config_interface():
     """
-    Configure hostname
+    Configure interface
     """
     logfile = netconf_test_common.DEFAULT_LOG_PATH + LOG_FILE
-    '''
     edit_config = """
-        <host-names xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-shellutil-cfg">
-            <host-name>Demo</host-name>
-        </host-names>"""
-    '''
-     edit_config = """
          <interfaces xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg">
              <interface>
-                 <interface-name>null 0</interface-name>
+                 <interface-name>Loopback 20212021</interface-name>
              </interface>
           </interfaces>"""
-    try:
-        netconf_test_common.logf = open(logfile, 'w')
-    except Exception as e:
-        print("ERROR: Unable to open " + logfile + "!")
-        return None
+
     # Initialize Netconf Connection
     nc = NetconfClient(debug=True)
     nc.connect()
     
-    if netconf_test_common.do_edit_cfg(nc, config=edit_config):
-        netconf_test_common.do_commit(nc)
- 
-    nc.close()
-    netconf_test_common.logf.close()
+    if do_edit_cfg(nc, config=edit_config):
+        do_commit(nc)
+        syslog.info("Configuration successful")
 
 if __name__ == '__main__':
-
-    syslog.info('Changing hostname to demo')
-    config_hostname()
+    config_interface()
