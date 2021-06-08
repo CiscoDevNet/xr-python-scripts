@@ -12,11 +12,11 @@ import pprint
 from iosxr.xrcli.xrcli_helper import *
 from cisco.script_mgmt import xrlog
 
-logger = xrlog.getScriptLogger('sample_script')
-syslog = xrlog.getSysLogger('sample_script')
+
+syslog = xrlog.getSysLogger('test_cli_show_version')
 helper = XrcliHelper(debug = True)
 
-if __name__ == '__main__':
+def test_execute():
         cmd = "show version"
         result = helper.xrcli_exec(cmd)
         print(result)
@@ -24,3 +24,8 @@ if __name__ == '__main__':
             syslog.info('SCRIPT : Show version successful')
         else:
             syslog.error('SCRIPT : Show version failed')   
+
+if __name__ == '__main__':
+        test_execute()
+       
+
