@@ -14,7 +14,7 @@ import re
 
 
 from cisco.script_mgmt import xrlog
-from iosxr.netconf.netconf_lib import *
+from iosxr.netconf.netconf_lib import NetconfClient
 
 log = xrlog.getScriptLogger('Sample')
 syslog = xrlog.getSysLogger('Sample')
