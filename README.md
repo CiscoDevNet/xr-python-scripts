@@ -8,7 +8,7 @@ There are 4 types of scripts:
 
 ## 1. Exec Script ##
 
-An exec script is a script that gets triggered via a CLI or a rpc over netconf. The script should be able to do whatever a management script can do from an external controller: connect to netconf/gNMI server on the same box, configure the box, query oper data, all model based, or CLI driven (CLI driven only available via netconf connection).
+An exec script is a script that gets triggered via a CLI or a rpc over netconf. The script should be able to do whatever a management script can do from an external controller: connect to netconf/gNMI server on the same box, configure the box, query oper data, all model based, or CLI driven (CLI driven only available via netconf connection). To get the yang models please refer to : https://github.com/YangModels/yang/tree/master/vendor/cisco/xr/731
 
 ## 2. Config Script ##
 
