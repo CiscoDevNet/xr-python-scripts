@@ -24,7 +24,7 @@ from iosxr import eem
 
 #Used to generate syslogs
 from cisco.script_mgmt import xrlog
-syslog = xrlog.getSysLogger("test_eem")
+syslog = xrlog.getSysLogger(<add your script name here>)
 
 # event_dict consists of details of the event
 rc, event_dict = eem.event_reqinfo()
@@ -32,4 +32,4 @@ rc, event_dict = eem.event_reqinfo()
 #You can process the information as needed and take action for example: generate a syslog.
 #Syslog type can be emergency, alert, critical, error, exception, warning, notification, info, debug
 
-syslog.info("Add you syslog here")
+syslog.info(<Add you syslog here>)
