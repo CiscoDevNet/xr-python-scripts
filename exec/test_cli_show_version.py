@@ -1,3 +1,6 @@
+# Copyright (c) 2021 by Cisco Systems, Inc.
+# All rights reserved.
+
 """
 This script executes show version on the router and prints the result.
 

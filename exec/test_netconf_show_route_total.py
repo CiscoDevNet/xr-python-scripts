@@ -1,44 +1,39 @@
 # Copyright (c) 2021 by Cisco Systems, Inc.
 # All rights reserved.
+
 """
-This checks the cpu utilization on the router at regular intervals and add syslogs.
+This script gets the show route summary oper data and prints the total route operations.
 
-""" 
+To verify:
+check for syslog 'Total route operations'
+"""
 
-import time
-import os
 import xmltodict
 import re
-import argparse
 
 from cisco.script_mgmt import xrlog
 from iosxr.netconf.netconf_lib import NetconfClient
 
-log = xrlog.getScriptLogger('Sample')
-syslog = xrlog.getSysLogger('Sample')
+syslog = xrlog.getSysLogger('test_netconf_show_ route_total')
 
-def cpu_memory_check():
+def route_check():
     """
     Check total routes in router
     """
-    parser = argparse.ArgumentParser()
-    parser.add_argument("threshold", help="cpu utilization threshold",type=int)
-    args = parser.parse_args()
-    threshold = args.threshold
+    logfile = netconf_test_common.DEFAULT_LOG_PATH + LOG_FILE
     filter_string = """
-    <system-monitoring xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-wdsysmon-fd-oper">
-      <cpu-utilization>
-        <node-name>0/RP0/CPU0</node-name>
-          <total-cpu-one-minute/>
-      </cpu-utilization>
-    </system-monitoring>"""
+    <rib xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ip-rib-ipv4-oper">
+    <rib-stats>
+    <rib-stats-summary/>
+    </rib-stats>
+    </rib>"""            
+
     nc = NetconfClient(debug=True)
     nc.connect()
     do_get(nc, filter=filter_string)
-    ret_dict = _xml_to_dict(nc.reply, 'system-monitoring')
-    total_cpu = int(ret_dict['system-monitoring']['cpu-utilization']['total-cpu-one-minute'])
-    if total_cpu >= threshold:
-        syslog.error("CPU utilization is %s, threshold value is %s" %(str(total_cpu),str(threshold)))
+    ret_dict = _xml_to_dict(nc.reply, 'rib')
+    route_oper = int(ret_dict['rib']['rib-stats']['rib-stats-summary']['batch-stats']['route-op-arg-rx'])
+    syslog.info('Total route operations: %s' %(route_oper))
     nc.close()
     
 def _xml_to_dict(xml_output, xml_tag=None):
@@ -61,14 +56,16 @@ def do_get(nc, filter=None, path=None):
         if path is not None:
             nc.rpc.get(file=path)
         elif filter is not None:
-            nc.rpc.get(request=filter)
+                nc.rpc.get(request=filter)
         else:
+            syslog.error("ERROR: Get data is empty!")
             return False
     except Exception as e:
+        syslog.error("Caught an Exception when performing get")
         return False
-    return True
+
 
 if __name__ == '__main__':
-    while(1):
-        cpu_memory_check()
-        time.sleep(30)
+
+    syslog.info('Checking rib statistics')
+    route_check()

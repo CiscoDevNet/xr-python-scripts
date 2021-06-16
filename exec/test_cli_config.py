@@ -1,3 +1,6 @@
+# Copyright (c) 2021 by Cisco Systems, Inc.
+# All rights reserved.
+
 """
 This script accepts configuration from user as a command line argument and commits it to the router.
 

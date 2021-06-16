@@ -1,3 +1,6 @@
+# Copyright (c) 2021 by Cisco Systems, Inc.
+# All rights reserved.
+
 """
 This script adds a loopback interface configuration.
 

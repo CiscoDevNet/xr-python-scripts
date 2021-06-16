@@ -1,3 +1,7 @@
+<!--
+  Copyright (c) 2021 by Cisco Systems, Inc.
+  All rights reserved.
+-->
 # Overview
 
 OPS stands for operational simplicity which is achieved by "on-the-box" automation in python, on IOS-XR routers.

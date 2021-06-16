@@ -1,3 +1,6 @@
+# Copyright (c) 2021 by Cisco Systems, Inc.
+# All rights reserved.
+
 """
 If a user restarts any process a syslog is generated. When syslog with "PROC_RESTART_NAME" is found the event script is triggered.
 The script processes the event (syslog) and prints the name of the process restarted by the user.

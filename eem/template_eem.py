@@ -1,3 +1,6 @@
+# Copyright (c) 2021 by Cisco Systems, Inc.
+# All rights reserved.
+
 """
 This is a template for an eem script
 
