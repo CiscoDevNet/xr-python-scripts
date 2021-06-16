@@ -10,12 +10,12 @@ import ipaddress
 from cisco.script_mgmt import xrlog
 syslog = xrlog.getSysLogger('xr_cli_config')
 
-loopback = "Loopback21041989"
+loopback = 'Loopback21041989'
 network = "100.0.0.0/8"
 mask = "255.255.255.255"
 
 def check_loopback(root):
-    int_config = root.get_node("/ifmgr-cfg:interface-configurations/interface-configuration[active='act',interface-name=loopback]")
+    int_config = root.get_node("/ifmgr-cfg:interface-configurations/interface-configuration[active='act',interface-name=%s]" %loopback)
     if int_config:
         ip_address = int_config.get_node("ipv4-io-cfg:ipv4-network/addresses/primary/address")
         syslog.info("ipaddress is " + ip_address.value)
