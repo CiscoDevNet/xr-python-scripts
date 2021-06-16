@@ -2,6 +2,8 @@
 This script validates the user configuration on a loopback interface.
 It checks for IP address to be in a certain range else shows an error and checks for netmask, if netmask does not match the validation the script changes it.
 
+Configuration to enable this feature:
+configuration validation scripts
 """
 
 import cisco.config_validation as xr
