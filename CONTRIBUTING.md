@@ -1,6 +1,6 @@
 # Contributing to this code
 
-The following is a set of guidelines for contributing to this code We want to make contributing to this project as easy and transparent as possible. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to this code. We want to make contributing to this project as easy and transparent as possible. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 
 ## Pull Requests
