@@ -4,7 +4,7 @@
 -->
 # Overview
 
-This repository contain samples of python scripts for "on-the-box" automation on IOS-XR routers. For other type of scripts and their support details please reach out to Cisco Systems Inc or refer to the IOS-XR release manuals. 
+This repository contain samples of python scripts for "on-the-box" automation on IOS-XR routers. For scripts in other languages, please reach out to Cisco Systems Inc. or refer to the IOS-XR release manuals. 
 
 This feature was introduced in 7.3.2 IOS-XR release with limited support and additional functional support is added in subsequent releases as outlined in Cisco's release documentation.
 
@@ -22,11 +22,11 @@ A config script is used to enforce that the router configuration adheres to one 
 
 ## 3. EEM Script ##
 
-An EEM (Embedded Event Manager) script is triggered via a predefined set of events. Events supported are syslog, timer, traceback and telemetry events along with logical correlation of events, rate-limit, occurrence and period. Every eem script has a maxrun (default is 20 seconds and can be overridden via config). If script doesn't terminate in "maxrun" time, the script is killed.
+An EEM (Embedded Event Manager) script is triggered via a predefined set of events. Events supported are syslog, timer, traceback and telemetry events along with logical correlation of events, rate-limit, occurrence and period. Every eem script has a maxrun (default is 20 seconds and can be overridden via config). If the script doesn't terminate in "maxrun" time, the script is killed.
 
 ## 4. Process Script: ##
 
-A process script will try to run forever as part of its design, and if it exits due to abnormal reason (it crashes itself, some other processes kill it, etc.), an external entity will try to restart the process. In another word, there is an external entity to do the “life cycle management” of the script. It is different compared to exec/eem/config scripts that are transient in nature and start running due to an external trigger (a XR-CLI, an event or a commit action), they run for a short period of time and then cease running. If these scripts cease running as part of normal code flow, or due to a mishap (it crashes itself, or some other processes kills it), no entity will attempt to run it again without next external trigger.
+A process script will try to run forever as part of its design, and if it exits due to abnormal reasons (it crashes itself, some other processes kill it, etc.), XR will try to restart the process script. XR does the “life cycle management” of this script. It is different compared to exec/eem/config scripts that are transient in nature, start running due to an external trigger (a XR-CLI, an event or a commit action) and run for a short period of time and then cease running. If exec/eem/config scripts cease running as part of normal code flow, or due to a mishap (it crashes itself, or some other processes kills it), XR does not attempt to run it again without next external trigger.
 
 
 # Getting Started
