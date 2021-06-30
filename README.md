@@ -6,7 +6,7 @@
 
 OPS stands for operational simplicity which is achieved by "on-the-box" automation in python, on IOS-XR routers.
 
-This feature is supported on IOS-XR releases 7.5.1 onwards.
+This feature is supported on IOS-XR releases 7.3.2 onwards.
 
 There are 4 types of scripts:
 
@@ -16,11 +16,13 @@ An exec script is a script that gets triggered via a CLI or a rpc over netconf. 
 
 ## 2. Config Script ##
 
-Commit script is a script that gets triggered during a “commit” process. When a configuration commit is going on, a “commit script” inserts itself into the commit process as a “middle-end” management agent. 
+A config script is used to enforce that the router configuration adheres to one or more customer-defined constraints. It is triggered automatically during configuration commits, and may either reject the commit (if invalid) or make changes to the contents of the commit (to make the resulting configuration valid). This ability to modify the contents of the commit can also be used to effectively automate repetitive configuration tasks, by making additional config changes that relate to the changes originally in the commit.
 
 ## 3. EEM Script ##
 
-The difference between an eem or event script and an exec script is that the eem script is triggered via a predefined set of events whereas the exec script is triggered by a CLI(user). Only event currently supported is a syslog.
+The difference between an eem script and an exec script is that the eem script is triggered via a predefined set of events whereas the exec script is triggered by a CLI(user). In 7.4.1 and 7.3.2 IOS-XR releases, the only event that is supported is syslog. 7.5.1 onwards, we also have timer, track and telemetry events support along with logical correlation of events, rate-limit, occurrence and period. 
+
+Every eem script has a maxrun (default is 20 seconds and can be overridden via config). If script doesn't terminate in "maxrun" time, script is killed.
 
 ## 4. Process Script: ##
 
@@ -67,15 +69,63 @@ Example:
 
 
 ## Step 4 ##
+Note: 
+
+1. For eem script checksum is configured with the event manager action and details can be found in the eem string docstrings.
+
+2. For config script user must commit the configuration "configuration validation scripts" before configuring a specific script. 
 
 Checksum configuration is MANDATORY to run scripts
   
-Syntax:
+Syntax for exec, config and process script:
 	config terminal
  		script {config,exec,process} <filename> checksum {sha256 <value>}
   
 Example:
 	
 ![image](https://user-images.githubusercontent.com/32883901/120832696-8eca8c00-c526-11eb-96e3-2704a20f7265.png)
+
+
+
+
+
+## Step 5 ##
+
+Check script status using the cli show script status. It should be "Ready"
+
+```
+RP/0/RP0/CPU0:ios#show script status 
+Tue Jun 21 16:35:14.877 UTC
+======================================================================================================
+ Name                            | Type   | Status           | Last Action | Action Time               
+------------------------------------------------------------------------------------------------------
+ test_cli_config.py              | exec   | Ready            | NEW         | Tue Jun 21 16:32:57 2021  
+======================================================================================================
+RP/0/RP0/CPU0:ios#
+```
+
+To see more details:
+
+```
+RP/0/RP0/CPU0:ios#show script status detail 
+Tue Jun 21 16:37:05.928 UTC
+======================================================================================================
+ Name                            | Type   | Status           | Last Action | Action Time               
+------------------------------------------------------------------------------------------------------
+ test_cli_config.py              | exec   | Ready            | NEW         | Tue Jun 21 16:32:57 2021  
+------------------------------------------------------------------------------------------------------
+ Script Name       : test_cli_config.py
+ Checksum          : dcfad756c7d0e8a23782dc7a159179bb6226e1d4edd689f31457f405ff79b1a6
+ History:
+ --------
+ 1.   Action       : NEW
+      Time         : Tue Jun 21 16:32:57 2021
+      Checksum     : dcfad756c7d0e8a23782dc7a159179bb6226e1d4edd689f31457f405ff79b1a6
+      Description  : User action IN_CLOSE_WRITE
+======================================================================================================
+RP/0/RP0/CPU0:ios#
+```
+
+
 
 
