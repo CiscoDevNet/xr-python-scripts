@@ -3,6 +3,36 @@
 """
 This checks the cpu utilization on the router at regular intervals and add syslogs.
 
+To trigger script
+Step 1: Add and configure script as shown in README.MD
+
+Step 2: Register the application with Appmgr
+
+Configuraton:
+appmgr process-script my-process-app
+executable test_process.py
+run args --threshold <threshold-value>
+
+Step 3: Activate the registered application
+appmgr process-script activate name my-process-app
+
+Step 4: Check script status
+show appmgr process-script-table
+
+RP/0/RP0/CPU0:ios#show appmgr process-script-table
+Thu Jan 21 18:15:03.201 UTC
+Name             Executable         Activated    Status     Restart Policy   Config Pending
+---------------  ------------------ --------- ------------- ---------------- --------------
+my-process-app   test_process.py      Yes       Running    On Failure            No
+
+Step 5: More operations
+RP/0/RP0/CPU0:ios#appmgr process-script ?
+  activate    Activate process script
+  deactivate  Deactivate process script
+  kill        Kill process script
+  restart     Restart process script
+  start       Start process script
+  stop        Stop process script
 """ 
 
 import time
@@ -17,14 +47,10 @@ from iosxr.netconf.netconf_lib import NetconfClient
 log = xrlog.getScriptLogger('Sample')
 syslog = xrlog.getSysLogger('Sample')
 
-def cpu_memory_check():
+def cpu_memory_check(threshold):
     """
     Check total routes in router
     """
-    parser = argparse.ArgumentParser()
-    parser.add_argument("threshold", help="cpu utilization threshold",type=int)
-    args = parser.parse_args()
-    threshold = args.threshold
     filter_string = """
     <system-monitoring xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-wdsysmon-fd-oper">
       <cpu-utilization>
@@ -69,6 +95,10 @@ def do_get(nc, filter=None, path=None):
     return True
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("threshold", help="cpu utilization threshold",type=int)
+    args = parser.parse_args()
+    threshold = args.threshold
     while(1):
-        cpu_memory_check()
+        cpu_memory_check(threshold)
         time.sleep(30)

@@ -7,11 +7,7 @@ This script executes show version on the router and prints the result.
 Verify:
 check for syslog: 'Show version successful'
 """ 
-import argparse
-import time
-import sys
-import os
-import pprint
+import re
 from iosxr.xrcli.xrcli_helper import *
 from cisco.script_mgmt import xrlog
 
@@ -23,8 +19,12 @@ def test_execute():
         cmd = "show version"
         result = helper.xrcli_exec(cmd)
         print(result)
+
         if result['status'] == 'success':
             syslog.info('SCRIPT : Show version successful')
+            m = re.search(r'[^Version ]*$',result['output'])
+            sylog.infoo("Script found " + m.group(0))
+
         else:
             syslog.error('SCRIPT : Show version failed')   
 

@@ -16,6 +16,8 @@ import xmltodict
 import re
 
 
+loopback = "loopback 123456"
+
 from cisco.script_mgmt import xrlog
 from iosxr.netconf.netconf_lib import NetconfClient
 
@@ -54,13 +56,12 @@ def config_interface():
     """
     Configure interface
     """
-    logfile = netconf_test_common.DEFAULT_LOG_PATH + LOG_FILE
     edit_config = """
          <interfaces xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg">
              <interface>
-                 <interface-name>Loopback 20212021</interface-name>
+                 <interface-name>%s</interface-name>
              </interface>
-          </interfaces>"""
+          </interfaces>"""(% loopback)
 
     # Initialize Netconf Connection
     nc = NetconfClient(debug=True)

@@ -12,7 +12,7 @@ type syslog pattern "PROC_RESTART_NAME"
 
 event manager action <action-name>
 username <user>
-type script script-name <script-name> checksum <checksum>
+type script script-name <script-name> checksum sha256 <checksum>
 
 event manager policy-map policy1
 trigger event <trigger-name>

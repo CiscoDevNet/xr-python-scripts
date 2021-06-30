@@ -5,8 +5,8 @@
 This script accepts configuration from user as a command line argument and commits it to the router.
 
 How to run?
-script run exec <path> test_xr_config.py arguments <configuration>
-eg: script run test_xr_config.py arguments "hostname ios" 
+script run test_cli_config.py arguments <configuration>
+eg: script run test_cli_config.py arguments 'hostname ios' 
 
 How to verify:
 show run | i <configuration>
