@@ -4,7 +4,7 @@
 -->
 # Overview
 
-This repository contain samples of python scripts for "on-the-box" automation on IOS-XR routers. For other type of script and their support details please reach out to Cisco Systems Inc or refer to the IOS-XR release manuals. 
+This repository contain samples of python scripts for "on-the-box" automation on IOS-XR routers. For other type of scripts and their support details please reach out to Cisco Systems Inc or refer to the IOS-XR release manuals. 
 
 This feature was introduced in 7.3.2 IOS-XR release with limited support and additional functional support is added in subsequent releases as outlined in Cisco's release documentation.
 
@@ -14,7 +14,7 @@ There are 4 types of scripts:
 
 ## 1. Exec Script ##
 
-An exec script is a script that gets triggered via a XR-CLI or a rpc over netconf. The script should be able to do whatever a management script can do from an external controller: connect to netconf/gNMI server on the same box, configure the box, query oper data, all model based, or CLI driven (CLI driven only available via netconf connection). To get the yang models please refer to : https://github.com/YangModels/yang/tree/master/vendor/cisco/xr/731
+An exec script is a script that gets triggered via a XR-CLI or a rpc over netconf. The script should be able to do whatever a management script can do from an external controller: connect to netconf/gNMI server on the same box, configure the box, query oper data, all model based, or XR-CLI driven (via Cisco libraries). To get the yang models please refer to : https://github.com/YangModels/yang/tree/master/vendor/cisco/xr.
 
 ## 2. Config Script ##
 
@@ -67,7 +67,6 @@ Example:
   
 ![image](https://user-images.githubusercontent.com/32883901/120832424-4317e280-c526-11eb-8b24-37db160e2879.png)
 
-
 ## Step 4 ##
 
 Note: 
@@ -85,10 +84,6 @@ Syntax for exec, config and process script:
 Example:
 	
 ![image](https://user-images.githubusercontent.com/32883901/120832696-8eca8c00-c526-11eb-96e3-2704a20f7265.png)
-
-
-
-
 
 ## Step 5 ##
 
