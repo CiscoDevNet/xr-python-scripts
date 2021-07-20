@@ -1,7 +1,9 @@
 # Copyright (c) 2021 by Cisco Systems, Inc.
 # All rights reserved.
 """
-Template for process scripts. Any exec script can be used as a process script
+Template for process scripts
+
+Any exec script can be used as a process script
 
 To trigger script
 Step 1: Add and configure script as shown in README.MD
