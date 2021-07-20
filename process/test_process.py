@@ -1,7 +1,10 @@
 # Copyright (c) 2021 by Cisco Systems, Inc.
 # All rights reserved.
 """
-This checks the cpu utilization on the router at regular intervals and add syslogs.
+Script to checkcpu utilization at regular intervals
+
+Arguments:
+threshold: int, threshold of cpu utilization
 
 To trigger script
 Step 1: Add and configure script as shown in README.MD
