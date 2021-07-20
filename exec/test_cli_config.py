@@ -2,7 +2,12 @@
 # All rights reserved.
 
 """
+Sample Config Script
+
 This script accepts configuration from user as a command line argument and commits it to the router.
+
+Arguments:
+cmd: str, configuration to commit
 
 How to run?
 script run test_cli_config.py arguments <configuration>
