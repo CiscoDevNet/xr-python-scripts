@@ -1,7 +1,8 @@
 # Copyright (c) 2021 by Cisco Systems, Inc.
 # All rights reserved.
 """
-This script validates the user configuration on a loopback interface.
+Validate user configuration on loopback interface.
+
 It checks for IP address to be in a certain range else shows an error and checks for netmask, if netmask does not match the validation the script changes it.
 
 Configuration to enable this feature:
