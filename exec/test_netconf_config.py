@@ -61,7 +61,7 @@ def config_interface():
              <interface>
                  <interface-name>%s</interface-name>
              </interface>
-          </interfaces>"""(%loopback)
+          </interfaces>""" % loopback
 
     # Initialize Netconf Connection
     nc = NetconfClient(debug=True)
