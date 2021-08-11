@@ -61,7 +61,7 @@ def config_interface():
            <interface-configurations>
              <interface-configuration>
                  <interface-name>%s</interface-name>
-                 </interface-virtual>
+                 <interface-virtual>
              </interface-configuration>
            </interface-configurations>
           </interfaces>""" % loopback
