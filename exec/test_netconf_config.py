@@ -16,7 +16,7 @@ import xmltodict
 import re
 
 
-loopback = "loopback 123456"
+loopback = "Loopback123456"
 
 from cisco.script_mgmt import xrlog
 from iosxr.netconf.netconf_lib import NetconfClient
