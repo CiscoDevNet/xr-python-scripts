@@ -59,8 +59,10 @@ def config_interface():
     edit_config = """
     <interface-configurations xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg">
       <interface-configuration>
-        <interface-name>%s</interface-name>
-      </interface-configuration>
+        <active>act</active>
+          <interface-name>%s</interface-name>
+          <interface-virtual/>
+        </interface-configuration>
     </interface-configurations>
     """ % loopback
 
