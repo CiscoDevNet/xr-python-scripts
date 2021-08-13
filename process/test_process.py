@@ -14,7 +14,7 @@ Step 2: Register the application with Appmgr
 Configuraton:
 appmgr process-script my-process-app
 executable test_process.py
-run args --threshold <threshold-value>
+run-args <threshold-value>
 
 Step 3: Activate the registered application
 appmgr process-script activate name my-process-app
