@@ -23,7 +23,7 @@ def test_execute():
         if result['status'] == 'success':
             syslog.info('SCRIPT : Show version successful')
             m = re.search(r'[^Version ]*$',result['output'])
-            sylog.infoo("Script found " + m.group(0))
+            syslog.info("Script found " + m.group(0))
 
         else:
             syslog.error('SCRIPT : Show version failed')   
