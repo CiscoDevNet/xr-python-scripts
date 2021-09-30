@@ -1,7 +1,7 @@
 # Copyright (c) 2021 by Cisco Systems, Inc.
 # All rights reserved.
 """
-Script to checkcpu utilization at regular intervals
+Script to check cpu utilization at regular intervals
 
 Arguments:
 threshold: int, threshold of cpu utilization
@@ -23,10 +23,10 @@ Step 4: Check script status
 show appmgr process-script-table
 
 RP/0/RP0/CPU0:ios#show appmgr process-script-table
-Thu Jan 21 18:15:03.201 UTC
-Name             Executable         Activated    Status     Restart Policy   Config Pending
----------------  ------------------ --------- ------------- ---------------- --------------
-my-process-app   test_process.py      Yes       Running    On Failure            No
+Thu Sep 30 17:42:08.050 UTC
+Name             Executable         Activated  Status    Restart Policy    Config Pending 
+---------------- ----------------- ----------- --------- ---------------- ----------------
+my-process-app   test_process.py       Yes     Started   Always                  No   
 
 Step 5: More operations
 RP/0/RP0/CPU0:ios#appmgr process-script ?
