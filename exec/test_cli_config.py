@@ -9,6 +9,12 @@ This script accepts configuration from user as a command line argument and commi
 Arguments:
 cmd: str, configuration to commit
 
+Note: AAA configurations are required. 
+Example:
+aaa authorization exec default group tacacs+ local
+aaa authorization eventmanager default local
+aaa authentication login default group tacacs+ local
+
 How to run?
 script run test_cli_config.py arguments <configuration>
 eg: script run test_cli_config.py arguments 'hostname ios' 
