@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2021 by Cisco Systems, Inc.
+  Copyright (c) 2021-22 by Cisco Systems, Inc.
   All rights reserved.
 -->
 # Overview
@@ -10,7 +10,7 @@ This feature was introduced in 7.3.2 IOS-XR release with limited support and add
 
 For the rest of this document all references to scripts stand for python scripts. 
 
-There are 4 types of scripts:
+There are 6 types of scripts:
 
 ## 1. Exec Script ##
 
@@ -28,12 +28,23 @@ An EEM (Embedded Event Manager) script is triggered via a predefined set of even
 
 A process script will try to run forever as part of its design, and if it exits due to abnormal reasons (it crashes itself, some other processes kill it, etc.), XR will try to restart the process script. XR does the “life cycle management” of this script. It is different compared to exec/eem/config scripts that are transient in nature, start running due to an external trigger (a XR-CLI, an event or a commit action) and run for a short period of time and then cease running. If exec/eem/config scripts cease running as part of normal code flow, or due to a mishap (it crashes itself, or some other processes kills it), XR does not attempt to run it again without next external trigger.
 
+## 5. SNMP Script: ##
+
+A SNMP scripts is used to add support for an SNMP OID that is not supported by XR. It could also be used add support for a custom OID that will retrieve custom data. The idea is that when an external SNMP manager (outside box) query the box for an OID that is not supported by IOS-XR, and if a custom SNMP script is tied to that OID, then this script will be triggered to get the data for the OID.
+
+## 6. Precommit Script: ##
+
+A pre-commit script is used to verify the target configuration (new configs added/modified/deleted) adheres to one or more customer-defined constraints when the config commit operation is performed. This differs from the config scripts in that the config scripts verifies the full running configs that would result from the commit but the pre-commit script verifies only the target configs.
+
 
 # Getting Started
 
 ## Step 1 ##
 
 Clone git repo: https://github.com/CiscoDevNet/iosxr-ops.git
+```
+$ git clone https://github.com/CiscoDevNet/iosxr-ops.git
+```
 
 ## Step 2 ## 
 
