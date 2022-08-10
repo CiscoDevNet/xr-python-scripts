@@ -30,11 +30,11 @@ A process script will try to run forever as part of its design, and if it exits 
 
 ## 5. SNMP Script: ##
 
-A SNMP scripts is used to add support for an SNMP OID that is not supported by XR. It could also be used add support for a custom OID that will retrieve custom data. The idea is that when an external SNMP manager (outside box) query the box for an OID that is not supported by IOS-XR, and if a custom SNMP script is tied to that OID, then this script will be triggered to get the data for the OID.
+A SNMP scripts is used to add support for an SNMP OID that is not supported by XR. It could also be used add support for a custom OID that will retrieve custom data. The idea is that when an external SNMP manager (outside box) query the box for an OID that is not supported by IOS-XR, and if a custom SNMP script is tied to that OID, then this script will be triggered to get the data for the OID. [suported release: IOS-XR 7.5.2 and later]
 
 ## 6. Precommit Script: ##
 
-A pre-commit script is used to verify the target configuration (new configs added/modified/deleted) adheres to one or more customer-defined constraints when the config commit operation is performed. This differs from the config scripts in that the config scripts verifies the full running configs that would result from the commit but the pre-commit script verifies only the target configs.
+A pre-commit script is used to verify the target configuration (new configs added/modified/deleted) adheres to one or more customer-defined constraints when the config commit operation is performed. This differs from the config scripts in that the config scripts verifies the full running configs that would result from the commit but the pre-commit script verifies only the target configs. [supported release: IOS-XR 7.5.4 and later]
 
 
 # Getting Started
