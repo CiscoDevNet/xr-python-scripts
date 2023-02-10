@@ -41,6 +41,7 @@ def generate_show_interfaces_counters_ecn_report(int_stats_list, report_format):
     :return: Report in text/json format having input and output tables
     """
 
+    # setting table column headers and corresponding keys in yang output
     col_names = [
                 'Interface',
                 'Class',
@@ -52,6 +53,7 @@ def generate_show_interfaces_counters_ecn_report(int_stats_list, report_format):
                 'ecn-marked-transmitted-packets', 'ecn-marked-transmitted-bytes',
                 ]
 
+    # setting column width and text alignment
     if report_format == "text":
         cwidth = dict(); calign = dict()
         cwidth['Interface'] = 16
@@ -72,6 +74,7 @@ def generate_show_interfaces_counters_ecn_report(int_stats_list, report_format):
     elif report_format == "json":
         rep_list = list()
 
+    # looping through each interface and retrieving the ecn stats
     for int_stats in sorted(int_stats_list,
                             key=lambda item: xr_data_collector.get_interface_rsmp(item['interface-name'])):
 
@@ -115,6 +118,7 @@ def generate_show_interfaces_counters_ecn_report(int_stats_list, report_format):
         if report_format == "json":
             rep_list.append(ret_int_dict)
 
+    # consolidating all the data collected and generating report
     if report_format == "text":
 
         rep = sline + '\n'

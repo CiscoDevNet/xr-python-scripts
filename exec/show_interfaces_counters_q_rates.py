@@ -42,6 +42,7 @@ def generate_show_interfaces_counters_q_rates_report(int_stats_list, report_form
     :return: Report in text/json format having input and output tables
     """
 
+    # setting table column headers and corresponding keys in yang output
     col_names = [
                 'Interface',
                 'Class',
@@ -55,6 +56,7 @@ def generate_show_interfaces_counters_q_rates_report(int_stats_list, report_form
                 'total-dropped-packets', 'total-dropped-bytes', 'total-dropped-rate',
                 ]
 
+    # setting column width and text alignment
     if report_format == "text":
         cwidth = dict(); calign = dict()
         cwidth['Interface'] = 16
@@ -79,6 +81,7 @@ def generate_show_interfaces_counters_q_rates_report(int_stats_list, report_form
     elif report_format == "json":
         rep_list = list()
 
+    # looping through each interface and retrieving the input/output rates
     for int_stats in sorted(int_stats_list,
                             key=lambda item: xr_data_collector.get_interface_rsmp(item['interface-name'])):
 
@@ -98,6 +101,8 @@ def generate_show_interfaces_counters_q_rates_report(int_stats_list, report_form
         ret_int_dict['Interface'] = int_name
         ret_int_dict['input-rates'] = []
         ret_int_dict['output-rates'] = []
+
+        # retrieving input rates
         for class_stats in int_stats['input-rates']:
 
             if report_format == "text":
@@ -119,6 +124,7 @@ def generate_show_interfaces_counters_q_rates_report(int_stats_list, report_form
             elif report_format == "json":
                 ret_int_dict['input-rates'].append(class_dict)
 
+        # retrieving output rates
         for class_stats in int_stats['output-rates']:
 
             if report_format == "text":
@@ -142,6 +148,7 @@ def generate_show_interfaces_counters_q_rates_report(int_stats_list, report_form
         if report_format == "json":
             rep_list.append(ret_int_dict)
 
+    # consolidating all the data collected and generating report
     if report_format == "text":
 
         rep = sline + '\n'

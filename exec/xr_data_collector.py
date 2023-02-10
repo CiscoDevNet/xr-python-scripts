@@ -20,6 +20,7 @@ def get_controller_stats(nc_con):
     """
     ret_list = list()
 
+    # Yang path for all controller stats
     yang_filter = """
       <ethernet-interface xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-drivers-media-eth-oper">
         <statistics>
@@ -27,14 +28,17 @@ def get_controller_stats(nc_con):
         </statistics>
       </ethernet-interface>
     """
+    # sending the yang request
     try:
         nc_con.rpc.get(request=yang_filter)
     except Exception as err:
         log.exception('Error during netconf get \n filter: {yang_filter}\n '
                       'Error : {err}'.format(yang_filter=yang_filter, err=err))
         raise err
+    # converting xml output to dict structure
     reply_dict = netconf_xml_to_dict(nc_con.reply, xml_tag='ethernet-interface')
 
+    # removing unwanted outer structure from reply
     for reply_int_dict in reply_dict['ethernet-interface']['statistics']['statistic']:
         ret_list.append(reply_int_dict)
     return ret_list
@@ -51,6 +55,7 @@ def get_controller_interface_stats(nc_con):
     """
     ret_list = list()
 
+    # Yang path for all controller stats
     yang_filter = """
       <ethernet-interface xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-drivers-media-eth-oper">
         <interfaces>
@@ -58,14 +63,17 @@ def get_controller_interface_stats(nc_con):
         </interfaces>
       </ethernet-interface>
     """
+    # sending the yang request
     try:
         nc_con.rpc.get(request=yang_filter)
     except Exception as err:
         log.exception('Error during netconf get \n filter: {yang_filter}\n '
                       'Error : {err}'.format(yang_filter=yang_filter, err=err))
         raise err
+    # converting xml output to dict structure
     reply_dict = netconf_xml_to_dict(nc_con.reply, xml_tag='ethernet-interface')
 
+    # removing unwanted outer structure from reply
     for reply_int_dict in reply_dict['ethernet-interface']['interfaces']['interface']:
         ret_list.append(reply_int_dict)
     return ret_list
@@ -83,6 +91,7 @@ def get_controller_npu_interfaces_stats(nc_con):
     """
     ret_list = list()
 
+    # Yang path for all controller stats
     yang_filter = """
       <ofa xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ofa-npu-stats-oper">
         <stats>
@@ -103,14 +112,17 @@ def get_controller_npu_interfaces_stats(nc_con):
         </stats>
       </ofa>
     """
+    # sending the yang request
     try:
         nc_con.rpc.get(request=yang_filter)
     except Exception as err:
         log.exception('Error during netconf get \n filter: {yang_filter}\n '
                       'Error : {err}'.format(yang_filter=yang_filter, err=err))
         raise err
+    # converting xml output to dict structure
     reply_dict = netconf_xml_to_dict(nc_con.reply, xml_tag='nodes')
 
+    # removing unwanted outer structure from reply
     if type(reply_dict['nodes']['node']) != list:
         # distributed systems single LCs
         if type(reply_dict['nodes']['node']['npu-numbers']['npu-number']) != list:
@@ -135,6 +147,7 @@ def get_interfaces_status(nc_con):
     """
     ret_list = list()
 
+    # Yang path for all controller stats
     yang_filter = """
       <interfaces xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-pfi-im-cmd-oper">
         <interface-xr>
@@ -142,14 +155,17 @@ def get_interfaces_status(nc_con):
         </interface-xr>
       </interfaces>
     """
+    # sending the yang request
     try:
         nc_con.rpc.get(request=yang_filter)
     except Exception as err:
         log.exception('Error during netconf get \n filter: {yang_filter}\n '
                       'Error : {err}'.format(yang_filter=yang_filter, err=err))
         raise err
+    # converting xml output to dict structure
     reply_dict = netconf_xml_to_dict(nc_con.reply, xml_tag='interfaces')
 
+    # removing unwanted outer structure from reply
     for reply_int_dict in reply_dict['interfaces']['interface-xr']['interface']:
         ret_list.append(reply_int_dict)
     return ret_list
@@ -167,6 +183,7 @@ def get_controller_npu_traps_stats(nc_con):
     """
     ret_list = list()
 
+    # Yang path for all controller stats
     yang_filter = """
       <ofa xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-ofa-npu-stats-oper">
         <stats>
@@ -186,14 +203,17 @@ def get_controller_npu_traps_stats(nc_con):
         </stats>
       </ofa>
     """
+    # sending the yang request
     try:
         nc_con.rpc.get(request=yang_filter)
     except Exception as err:
         log.exception('Error during netconf get \n filter: {yang_filter}\n '
                       'Error : {err}'.format(yang_filter=yang_filter, err=err))
         raise err
+    # converting xml output to dict structure
     reply_dict = netconf_xml_to_dict(nc_con.reply, xml_tag='nodes')
 
+    # removing unwanted outer structure from reply
     if type(reply_dict['nodes']['node']) == list:
         # distributed systems multiple LCs
         node_list = reply_dict['nodes']['node']
@@ -222,8 +242,11 @@ def get_hardware_drops(cli_handle):
     :return: dictionary
     """
     ret_list = list()
+    # regexp patterns to extract data from CLI output
     node_pattern = r"^Printing Drop Counters for node ([^\s]+)/CPU0$"
     trap_pattern = r".*\s+[0-9]\s+[0-9]+\s+.*[0-9]+\s+[0-9]+\s+[0-9]+$"
+
+    # executing CLI
     try:
         cmd = 'show drops all ongoing location all'
         result = cli_handle.xrcli_exec(cmd)
@@ -231,10 +254,10 @@ def get_hardware_drops(cli_handle):
         log.exception('Error during CLI (cmd) execution'
                       'Error : {err}'.format(cmd=cmd, err=err))
         raise err
-
     if not result['status'] == 'success':
         raise Exception('Execution of CLI {cmd} not successful.'.format(cmd=cmd))
 
+    # parsing each lines of the output and writing data into dictionaries
     node = ''
     for line in result['output'].split('\n'):
 
@@ -275,10 +298,13 @@ def get_interface_policy_map(cli_handle):
     :return: dictionary
     """
     ret_list = list()
+    # regexp patterns to extract data from CLI output
     class_pattern = r'^Class (\S+)'
     tx_pattern = r'^\s+Transmitted\s+:\s+([0-9]+)/([0-9]+)\s+([0-9]+)'
     total_pattern = r'^\s+Total Dropped\s+:\s+([0-9]+)/([0-9]+)\s+([0-9]+)'
     ecn_marked_pattern = r'^\s+RED ecn marked & transmitted\(packets/bytes\):\s+([0-9]+)/([0-9]+)'
+
+    # executing CLI
     try:
         cmd = 'show policy-map interface all'
         result = cli_handle.xrcli_exec(cmd)
@@ -286,10 +312,10 @@ def get_interface_policy_map(cli_handle):
         log.exception('Error during CLI (cmd) execution'
                       'Error : {err}'.format(cmd=cmd, err=err))
         raise err
-
     if not result['status'] == 'success':
         raise Exception('Execution of CLI {cmd} not successful.'.format(cmd=cmd))
 
+    # parsing each lines of the output and writing data into dictionaries
     intf_dict = dict()
     for line in result['output'].split('\n'):
 
@@ -341,6 +367,7 @@ def get_interface_name_handle_mapping(cli_handle):
     :return: dictionary
     """
     ret_dict = dict()
+    # executing CLI
     try:
         cmd = 'show im database brief location all'
         result = cli_handle.xrcli_exec(cmd)
@@ -348,9 +375,10 @@ def get_interface_name_handle_mapping(cli_handle):
         log.exception('Error during CLI (cmd) execution'
                       'Error : {err}'.format(cmd=cmd, err=err))
         raise err
-
     if not result['status'] == 'success':
         raise Exception('Execution of CLI {cmd} not successful.'.format(cmd=cmd))
+
+    # parsing each lines of the output and writing data into dictionaries
     for line in result['output'].split('\n'):
         split_line = line.split(' ')
         if split_line[0].startswith('0x'):
@@ -406,7 +434,8 @@ def is_ignore_interface(interface_name):
 
 def gen_interface_type_name(bandwidth=0, name='', name_format='name'):
     """
-    Generate the interface type name for the bandwidth passed.
+    Generate the interface name in full/short/normal for
+    for the bandwidth or interface name passed.
     :param bandwidth:  Bandwidth in kb
     :param name:  name of the interface
     :param name_format: [full,name,short] format of the name returned
